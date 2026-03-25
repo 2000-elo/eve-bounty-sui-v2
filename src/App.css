@@ -1,0 +1,160 @@
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+::selection { background: #00d4ff30; color: #e8f0ff; }
+body { background: #070b13; color: #cdd8ec; font-family: 'Rajdhani', sans-serif; min-height: 100vh; }
+
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@400;500;600;700&family=Share+Tech+Mono&display=swap');
+
+.topbar { background: #0c1222; border-bottom: 1px solid #1a2744; padding: 14px 24px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 50; }
+.topbar h1 { font-family: 'Orbitron', monospace; font-size: 17px; font-weight: 700; letter-spacing: 2px; color: #e8f0ff; }
+.topbar h1 b { color: #4da2ff; }
+.live { font-size: 12px; color: #5a7090; font-family: 'Share Tech Mono', monospace; }
+.live::before { content: ''; display: inline-block; width: 7px; height: 7px; background: #00ff88; border-radius: 50%; margin-right: 5px; animation: pulse 2s ease infinite; }
+
+@keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(0,255,136,0.4); } 70% { box-shadow: 0 0 0 6px rgba(0,255,136,0); } 100% { box-shadow: 0 0 0 0 rgba(0,255,136,0); } }
+@keyframes fadeInUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes bountyFlash { 0% { border-color: #ffaa00; box-shadow: 0 0 20px #ffaa0040; } 100% { border-color: #1a2744; box-shadow: none; } }
+
+.hero { text-align: center; padding: 40px 20px 30px; border-bottom: 1px solid #1a2744; margin-bottom: 20px; }
+.hero h2 { font-family: 'Orbitron', monospace; font-size: 28px; font-weight: 900; color: #e8f0ff; margin-bottom: 6px; }
+.hero h2 b { color: #4da2ff; }
+.hero p { color: #3a5070; font-size: 13px; max-width: 500px; margin: 0 auto; }
+
+.wrap { padding: 20px 24px; max-width: 1200px; margin: 0 auto; }
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; align-items: start; }
+
+.sec-title { font-family: 'Orbitron', monospace; font-size: 14px; color: #e8f0ff; margin: 20px 0 10px; letter-spacing: 1px; }
+.sec-title:first-child { margin-top: 0; }
+.mt { margin-top: 20px; }
+.ml { margin-left: 6px; }
+
+/* Wallet */
+.wallet-bar { background: #0c1222; border: 1px solid #1a2744; border-radius: 10px; padding: 14px 18px; margin-bottom: 16px; }
+.wallet-connected { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.wallet-dot { width: 8px; height: 8px; border-radius: 50%; background: #00ff88; animation: pulse 2s ease infinite; }
+.wallet-addr { color: #00ff88; font-family: 'Share Tech Mono', monospace; font-size: 13px; }
+.wallet-bal { color: #4da2ff; font-weight: 700; }
+.chain-badge { background: #4da2ff20; color: #4da2ff; padding: 2px 8px; border-radius: 4px; font-size: 9px; letter-spacing: 1px; }
+.wallet-picker { display: flex; gap: 8px; margin-top: 8px; }
+
+/* Buttons */
+.btn { padding: 10px 20px; border-radius: 8px; font-family: 'Orbitron', monospace; font-size: 12px; font-weight: 700; letter-spacing: 1px; cursor: pointer; border: none; transition: all 0.2s; }
+.btn:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(0,0,0,0.3); }
+.btn:active { transform: translateY(0); }
+.btn-primary { background: linear-gradient(135deg, #4da2ff, #2563eb); color: #fff; }
+.btn-connect { background: linear-gradient(135deg, #4da2ff, #2563eb); color: #fff; }
+.btn-wallet { background: #1a2744; color: #e8f0ff; border: 1px solid #2a4060; padding: 8px 16px; font-size: 11px; }
+.btn-sm { background: #1a2744; color: #5a7090; padding: 6px 12px; font-size: 10px; border: 1px solid #2a4060; }
+.full { width: 100%; padding: 14px; }
+
+/* Bounty Pool */
+.bounty-total { background: linear-gradient(135deg, #1a274400, #4da2ff10); border: 1px solid #4da2ff30; border-radius: 10px; padding: 20px; text-align: center; margin-bottom: 16px; }
+.pool-label { font-size: 11px; color: #3a5070; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 4px; }
+.pool-amount { font-family: 'Orbitron', monospace; font-size: 36px; font-weight: 900; color: #4da2ff; }
+.pool-sub { font-size: 12px; color: #5a7090; margin-top: 4px; }
+
+/* Form */
+.form-box { background: #0c1222; border: 1px solid #1a2744; border-radius: 8px; padding: 18px; animation: fadeInUp 0.4s ease; }
+.form-box label { display: block; font-size: 10px; text-transform: uppercase; letter-spacing: 2px; color: #3a5070; margin-bottom: 4px; margin-top: 12px; }
+.form-box label:first-child { margin-top: 0; }
+.form-box input { width: 100%; padding: 10px 14px; background: #0a0f1c; border: 1px solid #1a2744; border-radius: 6px; color: #e8f0ff; font-family: 'Rajdhani', sans-serif; font-size: 14px; outline: none; }
+.form-box input:focus { border-color: #4da2ff; }
+.hint { font-size: 10px; color: #3a5070; margin-top: 2px; }
+.form-msg { margin-top: 8px; font-size: 12px; text-align: center; color: #4da2ff; }
+.how-it-works { margin-top: 10px; padding: 10px; background: #0a0f1c; border-radius: 6px; font-size: 11px; color: #3a5070; line-height: 1.6; }
+.how-it-works b { color: #5a7090; }
+
+/* Expiry */
+.expiry-opts { display: flex; gap: 8px; margin-top: 4px; margin-bottom: 12px; }
+.exp-opt { padding: 6px 14px; background: #1a2744; border-radius: 5px; cursor: pointer; font-size: 12px; color: #5a7090; border: 1px solid #1a2744; transition: all 0.2s; }
+.exp-opt.on { background: #4da2ff20; color: #4da2ff; border-color: #4da2ff40; }
+
+/* Bounty Cards */
+.bounty-card { background: #0c1222; border: 1px solid #1a2744; border-radius: 10px; padding: 16px; margin-bottom: 10px; transition: all 0.3s ease; animation: fadeInUp 0.4s ease; }
+.bounty-card:hover { border-color: #4da2ff; box-shadow: 0 0 20px rgba(77,162,255,0.12); transform: translateY(-2px); }
+.bounty-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; }
+.bounty-target { font-family: 'Orbitron', monospace; font-size: 14px; font-weight: 700; color: #ff4060; }
+.bounty-amount { font-family: 'Orbitron', monospace; font-size: 22px; font-weight: 900; color: #4da2ff; }
+.sui-label { font-size: 12px; color: #4da2ff88; }
+.bounty-reason { font-size: 12px; color: #5a7090; margin-bottom: 8px; font-style: italic; }
+.bounty-footer { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 4px; }
+
+/* Status badges */
+.status { display: inline-block; padding: 3px 10px; border-radius: 4px; font-size: 10px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; }
+.status.active { background: #4da2ff20; color: #4da2ff; border: 1px solid #4da2ff40; }
+.status.claimed-status { background: #00ff8820; color: #00ff88; border: 1px solid #00ff8840; }
+
+.badge { padding: 2px 6px; border-radius: 3px; font-size: 9px; letter-spacing: 1px; margin-left: 6px; cursor: pointer; }
+.badge.funded { background: #00ff8820; color: #00ff88; }
+.badge.signed { background: #ffaa0020; color: #ffaa00; }
+
+.poster-name { color: #4da2ff; font-weight: 700; }
+.claimed-card { border-color: #00ff8830; }
+.claimed-amount { font-family: 'Orbitron', monospace; font-size: 16px; font-weight: 700; color: #00ff88; }
+.claimed-info { font-size: 13px; margin-top: 4px; }
+
+/* Colors */
+.dim { color: #3a5070; font-size: 11px; font-family: 'Share Tech Mono', monospace; }
+.green { color: #00ff88; }
+.red { color: #ff4060; }
+.orange { color: #ff8c42; }
+.cyan { color: #4da2ff; }
+
+/* Empty state */
+.empty-state { color: #3a5070; padding: 14px; font-size: 13px; background: #0c1222; border: 1px solid #1a2744; border-radius: 8px; text-align: center; }
+
+/* Leaderboard */
+.lb-row { padding: 10px 14px; border-bottom: 1px solid #111c30; display: flex; align-items: center; gap: 10px; transition: background 0.3s ease; }
+.lb-row:hover { background: #111c30; }
+.rank { font-family: 'Orbitron', monospace; font-size: 12px; color: #3a5070; min-width: 24px; }
+.rank.gold { color: #ffaa00; }
+.rank.silver { color: #aabbcc; }
+.rank.bronze { color: #cc7733; }
+.lb-name { color: #ff8c42; font-weight: 700; font-size: 14px; flex: 1; }
+.lb-val { font-family: 'Share Tech Mono', monospace; font-size: 13px; color: #00ff88; }
+
+/* Kill Feed */
+.kill-feed { max-height: 400px; overflow-y: auto; }
+.kill-item { display: flex; align-items: center; gap: 12px; padding: 10px 0; border-bottom: 1px solid #111c30; }
+.kill-icon { width: 32px; height: 32px; background: #ff406020; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 16px; }
+.kill-text { flex: 1; font-size: 13px; line-height: 1.4; }
+
+/* Contract banner */
+.contract-banner { background: #ffaa0015; border: 1px solid #ffaa0040; border-radius: 8px; padding: 14px 18px; margin-bottom: 16px; font-size: 13px; color: #ffaa00; line-height: 1.6; }
+.contract-banner code { background: #1a2744; padding: 2px 6px; border-radius: 3px; font-family: 'Share Tech Mono', monospace; font-size: 12px; color: #4da2ff; }
+
+/* On-chain badge */
+.onchain-badge { font-size: 9px; background: #00ff8820; color: #00ff88; padding: 2px 8px; border-radius: 4px; margin-left: 8px; letter-spacing: 1px; vertical-align: middle; }
+
+/* Claim section */
+.bounty-claimable { border-color: #00ff8860; animation: bountyFlash 2s ease infinite alternate; }
+.claim-section { background: #00ff8810; border: 1px solid #00ff8830; border-radius: 6px; padding: 10px 12px; margin-bottom: 10px; }
+.claim-match { font-size: 12px; color: #cdd8ec; margin-bottom: 8px; }
+.btn-claim { background: linear-gradient(135deg, #00ff88, #00cc6a); color: #070b13; font-weight: 900; width: 100%; padding: 12px; font-size: 13px; }
+.btn-claim:hover { box-shadow: 0 0 20px rgba(0, 255, 136, 0.3); }
+
+/* Register bar */
+.register-bar { background: #0c1222; border: 1px solid #1a2744; border-radius: 10px; padding: 14px 18px; margin-bottom: 16px; }
+.register-title { font-family: 'Orbitron', monospace; font-size: 11px; color: #ffaa00; letter-spacing: 1px; margin-bottom: 8px; text-transform: uppercase; }
+.register-form { display: flex; gap: 8px; align-items: center; }
+.register-form input { flex: 1; padding: 10px 14px; background: #0a0f1c; border: 1px solid #1a2744; border-radius: 6px; color: #e8f0ff; font-family: 'Rajdhani', sans-serif; font-size: 14px; outline: none; }
+.register-form input:focus { border-color: #ffaa00; }
+.btn-register { background: linear-gradient(135deg, #ffaa00, #ff8c42); color: #070b13; font-weight: 900; padding: 10px 20px; font-size: 11px; border: none; border-radius: 6px; cursor: pointer; font-family: 'Orbitron', monospace; letter-spacing: 1px; transition: all 0.2s; }
+.btn-register:hover { box-shadow: 0 0 16px rgba(255, 170, 0, 0.3); transform: translateY(-1px); }
+.registered-name { color: #00ff88; font-family: 'Share Tech Mono', monospace; font-size: 13px; }
+.registered-label { color: #3a5070; font-size: 10px; text-transform: uppercase; letter-spacing: 1px; }
+
+/* Cancel button */
+.btn-cancel { background: #ff406020; color: #ff4060; border: 1px solid #ff406040; padding: 4px 10px; font-size: 9px; margin-left: 8px; cursor: pointer; border-radius: 4px; font-family: 'Orbitron', monospace; letter-spacing: 1px; }
+.btn-cancel:hover { background: #ff406040; }
+
+/* Disabled button */
+.btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none; box-shadow: none; }
+
+/* Responsive */
+@media (max-width: 768px) {
+  .two-col { grid-template-columns: 1fr; }
+  .topbar, .wrap { padding-left: 10px; padding-right: 10px; }
+  .hero h2 { font-size: 20px; }
+  .pool-amount { font-size: 28px; }
+}

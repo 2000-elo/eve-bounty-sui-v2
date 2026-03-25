@@ -1,0 +1,19 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(node -e \"const p = require\\(''''C:/Users/amazm/Downloads/eve-bounty-sui/node_modules/@mysten/sui/package.json''''\\); console.log\\(JSON.stringify\\(p.exports, null, 2\\)\\)\")",
+      "Bash(node -e \":*)",
+      "Bash(node --input-type=module -e \":*)",
+      "Bash(where gh:*)",
+      "WebSearch",
+      "WebFetch(domain:docs.evefrontier.com)",
+      "WebFetch(domain:suiscan.xyz)",
+      "Bash(python3 -c \":*)",
+      "Bash(xcopy \"C:\\\\Users\\\\amazm\\\\Downloads\\\\eve-bounty-sui\" \"C:\\\\Users\\\\amazm\\\\Downloads\\\\eve-bounty-sui-v2\" \" /E /I /H /Y)",
+      "Bash(xcopy \"C:\\\\Users\\\\amazm\\\\Downloads\\\\eve-bounty-sui\" \"C:\\\\Users\\\\amazm\\\\Downloads\\\\eve-bounty-sui-v2\"\" /E /I /H /Y)",
+      "Bash(rm -rf \"C:/Users/amazm/Downloads/eve-bounty-sui-v2\")",
+      "Bash(mkdir -p \"C:/Users/amazm/Downloads/eve-bounty-sui-v2\")",
+      "Bash(rsync -av --exclude='node_modules' --exclude='.git' --exclude='build' --exclude='Published.toml' . \"C:/Users/amazm/Downloads/eve-bounty-sui-v2/\")"
+    ]
+  }
+}
