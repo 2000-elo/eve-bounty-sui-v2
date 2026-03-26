@@ -379,6 +379,7 @@ function App() {
   for (const b of bounties) {
     for (const k of kills) {
       if (k.victim.toLowerCase() === b.target.toLowerCase() &&
+          k.lossType === 'SHIP' &&
           new Date(k.time) > new Date(b.posted)) {
         claimableMap[b.id] = k
         break
