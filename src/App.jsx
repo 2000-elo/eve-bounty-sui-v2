@@ -63,48 +63,75 @@ async function fetchAllObjects(type, maxItems = 5000) {
 
 // ── EVE Vault Lookup ─────────────────────────────────────────────
 // Look up a player's EVE Frontier character from their wallet address
-// Path: wallet → PlayerProfile (owned) → Character (shared) → metadata.name
+// Tries multiple methods:
+// 1. PlayerProfile owned by wallet → Character → metadata.name
+// 2. Scan all Character objects for matching character_address
 async function lookupEveCharacter(walletAddress) {
   try {
-    // Step 1: Find PlayerProfile objects owned by this wallet
-    const data = await gql(`{
-      address(address: "${walletAddress}") {
-        objects(filter: { type: "${PLAYER_PROFILE_TYPE}" }, first: 5) {
-          nodes {
-            asMoveObject { contents { json } }
+    // Method 1: Look for PlayerProfile owned by this wallet (JSON-RPC)
+    console.log('EVE Vault: Looking up PlayerProfile for', walletAddress)
+    try {
+      const owned = await suiClient.getOwnedObjects({
+        owner: walletAddress,
+        filter: { StructType: PLAYER_PROFILE_TYPE },
+        options: { showContent: true },
+      })
+      console.log('EVE Vault: PlayerProfile result:', JSON.stringify(owned, null, 2))
+
+      if (owned?.data?.length > 0) {
+        const fullObj = owned.data[0]
+        console.log('EVE Vault: Full profile object:', JSON.stringify(fullObj, null, 2))
+        const profileContent = fullObj.data?.content
+        console.log('EVE Vault: Profile content:', JSON.stringify(profileContent, null, 2))
+        const fields = profileContent?.fields || profileContent?.json
+        console.log('EVE Vault: Profile fields:', JSON.stringify(fields, null, 2))
+        const characterId = fields?.character_id
+
+        if (characterId) {
+          console.log('EVE Vault: Found character_id:', characterId)
+          const charObj = await suiClient.getObject({
+            id: characterId,
+            options: { showContent: true },
+          })
+
+          if (charObj?.data?.content) {
+            const charFields = charObj.data.content.fields || charObj.data.content.json
+            const name = charFields?.metadata?.fields?.name || charFields?.metadata?.name
+            return {
+              name: name?.trim() || null,
+              characterId,
+              characterAddress: charFields?.character_address,
+              tribeId: charFields?.tribe_id,
+              tenant: charFields?.key?.fields?.tenant || charFields?.key?.tenant,
+              itemId: charFields?.key?.fields?.item_id || charFields?.key?.item_id,
+            }
           }
         }
       }
-    }`)
-
-    if (!data?.address?.objects?.nodes?.length) return null
-
-    const profile = data.address.objects.nodes[0].asMoveObject.contents.json
-    const characterId = profile.character_id
-
-    if (!characterId) return null
-
-    // Step 2: Fetch the Character object to get the name
-    const charData = await gql(`{
-      object(address: "${characterId}") {
-        asMoveObject { contents { json } }
-      }
-    }`)
-
-    if (!charData?.object?.asMoveObject?.contents?.json) return null
-
-    const character = charData.object.asMoveObject.contents.json
-    const name = character.metadata?.name?.trim()
-    const charAddress = character.character_address
-
-    return {
-      name: name || null,
-      characterId,
-      characterAddress: charAddress,
-      tribeId: character.tribe_id,
-      tenant: character.key?.tenant,
-      itemId: character.key?.item_id,
+    } catch (e) {
+      console.log('EVE Vault: PlayerProfile lookup failed, trying fallback:', e)
     }
+
+    // Method 2: Scan all Character objects and match by character_address
+    console.log('EVE Vault: Trying character_address scan fallback...')
+    const charObjects = await fetchAllObjects(`${WORLD_PKG}::character::Character`)
+    for (const c of charObjects) {
+      if (c.character_address === walletAddress) {
+        const name = c.metadata?.name?.trim()
+        console.log('EVE Vault: Found character via address scan:', name)
+        return {
+          name: name || null,
+          characterId: c.objectId,
+          characterAddress: c.character_address,
+          tribeId: c.tribe_id,
+          tenant: c.key?.tenant,
+          itemId: c.key?.item_id,
+        }
+      }
+    }
+
+    console.log('EVE Vault: No character found for this wallet')
+    return null
   } catch (e) {
     console.error('EVE Vault lookup failed:', e)
     return null
@@ -160,10 +187,12 @@ function App() {
   const [wallets, setWallets] = useState([])
   const [showWalletPicker, setShowWalletPicker] = useState(false)
 
-  // EVE Vault identity (auto-detected)
+  // EVE Vault identity (auto-detected or manual fallback)
   const [eveCharacter, setEveCharacter] = useState(null)
   const [vaultLoading, setVaultLoading] = useState(false)
   const [vaultStatus, setVaultStatus] = useState('')
+  const [manualName, setManualName] = useState('')
+  const [manualNameSet, setManualNameSet] = useState(false)
 
   // Kill data (from EVE world)
   const [kills, setKills] = useState([])
@@ -569,14 +598,12 @@ function App() {
               </div>
             ) : (
               <div>
-                <div className="register-title" style={{color: '#ff4060'}}>NO EVE FRONTIER CHARACTER FOUND</div>
+                <div className="register-title" style={{color: '#3a5070'}}>NO EVE FRONTIER CHARACTER DETECTED</div>
                 <div className="dim" style={{fontSize:'12px'}}>
-                  This wallet has no EVE Frontier PlayerProfile. Make sure you're using the same wallet linked to your EVE Frontier account.
-                  You can still post bounties, but you won't be able to claim any.
+                  Connect with your EVE Vault wallet to auto-detect your character. You can still post bounties.
                 </div>
               </div>
             )}
-            {vaultStatus && !vaultLoading && <div className="form-msg" style={{marginTop:'6px'}}>{vaultStatus}</div>}
           </div>
         )}
 
