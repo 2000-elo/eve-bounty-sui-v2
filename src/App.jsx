@@ -311,17 +311,18 @@ function App() {
 
       setBounties(active)
 
-      if (onChainClaimed.length > 0) {
-        setClaimedBounties(prev => {
-          const ids = new Set(prev.map(c => c.id))
-          const merged = [...prev]
-          for (const c of onChainClaimed) {
-            if (!ids.has(c.id)) merged.unshift(c)
-          }
-          saveClaimedHistory(merged)
-          return merged
-        })
-      }
+      // DEMO: skip loading old claimed bounties from chain
+      // if (onChainClaimed.length > 0) {
+      //   setClaimedBounties(prev => {
+      //     const ids = new Set(prev.map(c => c.id))
+      //     const merged = [...prev]
+      //     for (const c of onChainClaimed) {
+      //       if (!ids.has(c.id)) merged.unshift(c)
+      //     }
+      //     saveClaimedHistory(merged)
+      //     return merged
+      //   })
+      // }
     } catch (e) {
       console.error('Failed to load bounties:', e)
     }
@@ -341,11 +342,14 @@ function App() {
         ])
 
         const cMap = {}
+        console.log('Characters loaded:', charObjects.length)
+        if (charObjects.length > 0) console.log('Sample character:', JSON.stringify(charObjects[0], null, 2))
         for (const c of charObjects) {
           const id = c.key?.item_id
           const name = c.metadata?.name?.trim()
           if (id && name) cMap[id] = name
         }
+        console.log('Character map entries:', Object.keys(cMap).length)
         setCharMap(cMap)
 
         const killList = killObjects.map(k => {
@@ -364,6 +368,20 @@ function App() {
             objectId: k.objectId
           }
         }).sort((a, b) => new Date(b.time) - new Date(a.time))
+
+        // TEST KILL — REMOVE BEFORE SUBMITTING
+        killList.unshift({
+          id: 'test-kill-1',
+          killer: 'amazmo shorts',
+          killerId: 'test',
+          victim: 'TestTarget',
+          victimId: 'test',
+          system: '30010598',
+          lossType: 'SHIP',
+          time: new Date(Date.now() + 60000).toISOString(),
+          objectId: 'test'
+        })
+        // END TEST KILL
 
         setKills(killList)
       } catch (e) {
@@ -458,11 +476,12 @@ function App() {
       const result = await execTx(wallet, account, tx)
       const digest = result.digest || result.txDigest || ''
 
+      console.log('CLAIM killerName:', killerName, 'eveCharacter:', eveCharacter?.name)
       const claimRecord = {
         ...bounty,
         claimed: true,
         claimedBy: account.address,
-        claimedByName: killerName,
+        claimedByName: killerName || eveCharacter?.name || 'Unknown',
         claimedAt: new Date().toISOString(),
         txDigest: digest,
       }
