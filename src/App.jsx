@@ -369,20 +369,6 @@ function App() {
           }
         }).sort((a, b) => new Date(b.time) - new Date(a.time))
 
-        // TEST KILL — REMOVE BEFORE SUBMITTING
-        killList.unshift({
-          id: 'test-kill-1',
-          killer: 'amazmo shorts',
-          killerId: 'test',
-          victim: 'TestTarget',
-          victimId: 'test',
-          system: '30010598',
-          lossType: 'SHIP',
-          time: new Date(Date.now() + 60000).toISOString(),
-          objectId: 'test'
-        })
-        // END TEST KILL
-
         setKills(killList)
       } catch (e) {
         console.error('Load failed:', e)
